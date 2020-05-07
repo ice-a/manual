@@ -31,7 +31,7 @@ gitlab-ctl restart
 ## 配置防火墙
 
 ```
-# 端口 {port} = 8000
+# 端口 {port}
 firewall-cmd --zone=public --add-port={port}/tcp --permanent
 firewall-cmd --reload
 ```
