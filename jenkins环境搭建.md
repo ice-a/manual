@@ -72,10 +72,11 @@ vi /var/lib/jenkins/hudson.model.UpdateCenter.xml
 <sites>
   <site>
     <id>default</id>
+    <!-- <url>https://updates.jenkins.io/update-center.json</url> -->
     <url>https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</url>
   </site>
 </sites>
-# [https://updates.jenkins.io/update-center.json] -> [https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json]
+
 
 # 重启服务
 systemctl start jenkins
