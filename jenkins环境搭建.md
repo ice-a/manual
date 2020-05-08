@@ -82,8 +82,7 @@ vi /var/lib/jenkins/hudson.model.UpdateCenter.xml
 systemctl start jenkins
 ```
 
-
-**注意: 不要安装推荐的插件 因为会很慢***
+**注意: 不要安装推荐的插件 因为会很慢**
 
 ## 初始化Jenkins
 
