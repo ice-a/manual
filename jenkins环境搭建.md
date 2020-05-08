@@ -7,14 +7,18 @@ Jenkins运行需要java环境, 所以需要先安装 jdk
 # 安装 openjdk
 yum install java-1.8.0-openjdk* -y
 
-# 查看安装目录
+# 验证是否安装成功
+java -version
+
+# jdk安装目录
 ll /usr/lib/jvm/
 ```
 ## 安装Jenkins
 ### 获取官网 jenkins 安装包
 官网地址:  `https://jenkins.io/zh/`
 ```
-wget https://prodjenkinsreleases.blob.core.windows.net/redhat-stable/：jenkins-2.190.3-1.1.noarch.rpm
+# 如果访问特别慢 建议使用迅雷等工具离线下载安装
+wget https://pkg.jenkins.io/redhat-stable/jenkins-2.190.3-1.1.noarch.rpm
 ```
 ### 安装
 ```
@@ -55,7 +59,8 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 # 9967b774d1dd4c709a8fca93d6bb3a82
 ```
 
-问题解决:
+**问题及解决办法**
+
 ```
 1. 如果页面出现 Please wait while Jenkins is getting ready to work, 并且长时间无反应:
 
