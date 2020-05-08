@@ -64,10 +64,10 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 1. 如果页面出现 Please wait while Jenkins is getting ready to work, 并且长时间无反应:
 
-# 修改配置文件
+# 修改配置文件中的 url 为国内镜像地址
 vi /var/lib/jenkins/hudson.model.UpdateCenter.xml
 
-# 修改为如下
+# 修改为如下内容
 <?xml version='1.1' encoding='UTF-8'?>
 <sites>
   <site>
@@ -83,15 +83,12 @@ systemctl start jenkins
 ```
 
 
-
-****
-
 **注意: 不要安装推荐的插件 因为会很慢***
 
 ## 初始化Jenkins
 
 ```
-# 浏览器访问地址 等待刷完成
+# 浏览器访问地址 等待刷新完成
 http://{hostname}:[port]/pluginManager/available
 
 # 修改插件地址
