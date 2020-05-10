@@ -9,16 +9,16 @@ yum -y install subversion
 创建目录
 ```
 # 存放数据
-mkdir -p /app/svn/data
+mkdir -p /usr/local/svn/data
 # 存放授权配置
-mkdir -p /app/svn/conf
+mkdir -p /usr/local/svn/conf
 ```
 启动服务
 ```
 # -d 守护进程形式
 # -r 指定数据存放目录
 # 更多配置 --help
-svnserve -d -r /app/svn/data
+svnserve -d -r /usr/local/svn/data
 ```
 
 查看进程
@@ -32,9 +32,7 @@ ps -ef|grep svn
 ```
 # svn 默认端口 3690
 netstat -lntup|grep 3690
-
 lsof -i tcp:3690
-
 lsof -i :3690
 ```
 
@@ -48,18 +46,18 @@ svnadmin help
 svnadmin help create
 
 # 创建 {repo_ver1} 版本库
-svnadmin create /app/svn/data/repo_ver1
+svnadmin create /usr/local/svn/data/repo_ver1
 
 # 查看版本库结构
-tree /app/svn/data/repo_ver1
-
+npm install -y tree # 安装 tree 命令
+tree /usr/local/svn/data/repo_ver1
 ```
 
 版本库配置管理
 
 ```
 # 配置文件位置
-cd /app/svn/data/repo_ver1/conf
+cd /usr/local/svn/data/repo_ver1/conf
 
 # 查看配置文件
 ll
@@ -73,23 +71,21 @@ ll
 cp svnserve.conf svnserve.conf.ori
 
 # 编辑配置文件
-vi svnserve.conf
+vim svnserve.conf
 
 # 修改配置文件
 # 不允许匿名访问
 [# anno-access = read] -> [anno-access = none]
 # 写操作要授权
-[# auth-access = write] -> [# auth-access = write]
+[# auth-access = write] -> [auth-access = write]
 
 # 打开用户密码数据库
-[# password-db = passwd] -> [password-db = passwd] 
 # 每个库的密码配置到统一管理文件中
-[# password-db = passwd] -> [password-db = /app/svn/conf/passwd]
+[# password-db = passwd] -> [password-db = /usr/local/svn/conf/passwd]
 
 # 打开权限数据库
-[# authz-db = authz] -> [authz-db = authz] 
 # 每个库的密码配置到统一管理文件中
-[# authz-db = authz] -> [authz-db = /app/svn/conf/authz]
+[# authz-db = authz] -> [authz-db = /usr/local/svn/conf/authz]
 ```
 
 检查变更内容
@@ -101,30 +97,32 @@ diff svnserve.conf svnserve.conf.ori
 拷贝配置文件到统一管理配置目录
 
 ```
-cp passwd authz /app/svn/conf
+cp passwd authz /usr/local/svn/conf
 ```
 
 修改权限
 
 ```
-cd /app/svn/conf/
+cd /usr/local/svn/conf/
 chmod 700 *
 ```
 
 添加用户
 
 ```
-vi passwd
+vim passwd
 # 在 [users] 中插入一行， 格式: [用户名 = 密码]
-cao.shd = 123456
-tom = tom123
-mike = mike123
+caoshd = 123456
+jenkins = 123456
+
+# 保存退出
+:x
 ```
 
 添加权限
 
 ```
-# 格式说明
+vim authz
 # 新增用户组
 [groups]
 dev = tom,mike
@@ -149,13 +147,14 @@ cao.shd = rw  # 单独给用户读写权限
 # 杀死服务
 pkill svnserve
 # 启动服务
-svnserve -d -r /app/svn/data
+svnserve -d -r /usr/local/svn/data
 ```
 
 访问地址
 
 ```
-svn://host/repo_name
+# 使用 tortoiseSVN 工具访问 
+svn://{hostname}/{repo_name}
 ```
 
 ## svn钩子
@@ -164,7 +163,7 @@ svn://host/repo_name
 
 ```
 # 钩子位置 {版本库目录}/hooks
-/app/svn/data/repo_ver1/hooks
+/usr/local/svn/data/repo_ver1/hooks
 
 # 钩子模板 带有注释的比较常用
 -rw-r--r--. 1 root root 1977 Apr 15 23:42 post-commit.tmpl            # 提交后触发
