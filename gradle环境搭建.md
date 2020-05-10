@@ -1,4 +1,4 @@
-# Gradle配置全局国内镜像仓库
+# gradle配置全局国内镜像仓库
 ## 进入GRADLE_USER_HOME
 Windows环境下默认路径为: `C:\Users\[你的用户名]\.gradle\`
 如果手动修改过环境变量, 则为环境变量指定的路径.
