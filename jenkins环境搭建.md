@@ -171,15 +171,21 @@ Jenkins默认权限管理粒度特别粗，无法实现精准的权限控制，�
 
 插件名称：Role-based Authorization Strategy
 
-
-
 ### 凭证管理插件
 
 凭据可以用来存储需要密文保护的数据库密码、Gitlab密码信息、Docker私有仓库密码等，以便Jenkins可以和这些第三方的应用进行交互。
 
 插件名称：Credentials Binding
 
+## SVN插件
 
+用于从连接访问远程 svn  并将远程svn目录内容拉取到jenkins目录。
 
+插件名称： Subversion
 
+## 容器管理插件 
+
+用于将项目发布到指定的 web 容器
+
+插件名称：Deploy to container
 
