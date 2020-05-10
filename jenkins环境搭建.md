@@ -17,13 +17,14 @@ ll /usr/lib/jvm/
 ### 获取官网 jenkins 安装包
 官网地址:  `https://jenkins.io/zh/`
 **注意每次去官方取发布的最新稳定版 防止装完以后许多插件用不了 还得继续升级**
+
 ```
 # 如果访问特别慢 建议使用迅雷等工具离线下载安装
-wget https://pkg.jenkins.io/redhat-stable/jenkins-2.222.3-1.1.noarch.rpm
+wget https://pkg.jenkins.io/redhat-stable/jenkins-2.222.1-1.1.noarch.rpm
 ```
 ### 安装
 ```
-rpm -ivh jenkins-2.222.3-1.1.noarch.rpm
+rpm -ivh jenkins-2.222.1-1.1.noarch.rpm
 ```
 **本质上在`/var/lib/jenkins/`路径下发布了一个jenkins的war包**
 
@@ -83,9 +84,6 @@ http://{hostname}:[port]/
 
 # jenkins 发布路径
 ll /var/lib/jenkins/
-
-# 查看自动生成的密码
-cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 
 **问题及解决办法**
@@ -94,42 +92,66 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 1. 如果页面出现 Please wait while Jenkins is getting ready to work, 并且长时间无反应:
 
 # 修改配置文件中的 url 为国内镜像地址
-vi /var/lib/jenkins/hudson.model.UpdateCenter.xml
+vim /var/lib/jenkins/hudson.model.UpdateCenter.xml
 
 # 修改为如下内容
 <?xml version='1.1' encoding='UTF-8'?>
 <sites>
   <site>
     <id>default</id>
-    <url>http://mirror.xmission.com/jenkins/updates/update-center.json</url>
+    <url>https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</url>
   </site>
 </sites>
 
 # 重启服务
-systemctl start jenkins
+systemctl restart jenkins
 ```
-**注意: 不要安装推荐的插件 因为会很慢 等到配置好国内镜像后手动按需要安装插件 **
-## 初始化Jenkins
-```
-# 浏览器访问地址 等待刷新完成
-http://{hostname}:[port]/pluginManager/available
+****
 
+## 查看初始密码
+
+````
+# 查看自动生成的密码
+cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+**注意 不要安装任何插件 等到镜像配置好了再按需要安装插件**
+## 添加管理员用户
+按提示输入用户名密码就好
+
+## 实例配置
+
+默认就好
+
+## 初始化Jenkins
+
+```
 # 修改插件地址
 cd /var/lib/jenkins/updates
 
-sed -i 's/http:\/\/updates.jenkinsci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g' default.json && sed -i 's/http:\/\/www.google.com/https:\/\/www.baidu.com/g' default.json
+sed -i 's/http:\/\/updates.jenkins-ci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g' default.json && sed -i 's/http:\/\/www.google.com/https:\/\/www.baidu.com/g' default.json
+
+# 浏览器访问地址 等待刷新完成
+http://{hostname}:[port]/pluginManager/available
+
+# 重启服务
+systemctl restart jenkins
 
 # 浏览器访问地址
 http://{hostname}:[port]/pluginManager/advanced
-
-# 最底部 Update Site 填入如下路径
-https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json
-
-# 重启服务
-http://{hostname}:[port]/restart 
 ```
 
+## 下载插件失败解决
+
+即使配置了镜像地址， 依然可能出现镜像下载失败的情况。注意查看报错信息 然后去如下地址下载指定的镜像，然后手动安装
+
+```
+https://mirrors.tuna.tsinghua.edu.cn/jenkins
+```
+
+
+
 ## 卸载Jenkins
+
 ```
 # rpm卸载
 rpm -e jenkins
@@ -138,3 +160,26 @@ rpm -ql jenkins
 # 彻底删除残留文件：
 find / -iname jenkins | xargs -n 1000 rm -rf
 ```
+
+## 配置Jenkins插件
+
+Jenkins有各种各样的插件用于管理和构建任务，因为之前安装时未安装任何的插件，所以要接下来需要安装一些基础的常用的插件
+
+### 权限管理插件
+
+Jenkins默认权限管理粒度特别粗，无法实现精准的权限控制，所以需要安装插件解决企业级权限控制问题。
+
+插件名称：Role-based Authorization Strategy
+
+
+
+### 凭证管理插件
+
+凭据可以用来存储需要密文保护的数据库密码、Gitlab密码信息、Docker私有仓库密码等，以便Jenkins可以和这些第三方的应用进行交互。
+
+插件名称：Credentials Binding
+
+
+
+
+
