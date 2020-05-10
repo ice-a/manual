@@ -1,4 +1,4 @@
-# linux环境安装Maven
+# Linux环境安装Maven
 
 ## 前提条件
 
@@ -19,7 +19,7 @@ tar zvxf apache-maven-3.6.1-bin.tar.gz
 # 个人习惯安装到 /usr/local/maven/目录下
 mkdir -p /usr/local/maven/
 # 执行复制操作
- cp -r apache-maven-3.6.1 /usr/local/maven/maven3.6.1
+cp -r apache-maven-3.6.1 /usr/local/maven/maven3.6.1
 # 创建 maven 本地仓库目录
 mkdir -p /usr/local/maven/maven3.6.1/repo
 ```
