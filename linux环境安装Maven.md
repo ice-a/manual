@@ -20,20 +20,29 @@ tar zvxf apache-maven-3.6.1-bin.tar.gz
 mkdir -p /usr/local/maven/
 # 执行复制操作
  cp -r apache-maven-3.6.1 /usr/local/maven/maven3.6.1
+# 创建 maven 本地仓库目录
+mkdir -p /usr/local/maven/maven3.6.1/repo
 ```
 ## 配置 maven
 编辑配置文件
 ```
 vim /usr/local/maven/maven3.6.1/conf/settings.xml
 ```
+修改本地仓库位置
+
+```
+<localRepository>/usr/local/maven/maven3.6.1/repo</localRepository>
+```
+
 修改 maven 镜像 (使用阿里镜像)
+
 ```
 <mirror>
   <id>aliyun</id>
   <name>aliyun maven</name>
   <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
   <mirrorOf>central</mirrorOf>
-<mirror>
+</mirror>
 ```
 修改环境变量 
 ```
