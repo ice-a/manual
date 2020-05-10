@@ -163,14 +163,15 @@ svn://{hostname}/{repo_name}
 
 ```
 # 钩子位置 {版本库目录}/hooks
-/usr/local/svn/data/repo_ver1/hooks
+cd /usr/local/svn/data/repo_ver1/hooks
 
-# 钩子模板 带有注释的比较常用
+# 查看钩子模板 带有注释的比较常用
+ll
 -rw-r--r--. 1 root root 1977 Apr 15 23:42 post-commit.tmpl            # 提交后触发
 -rw-r--r--. 1 root root 1638 Apr 15 23:42 post-lock.tmpl
 -rw-r--r--. 1 root root 2289 Apr 15 23:42 post-revprop-change.tmpl    
 -rw-r--r--. 1 root root 1567 Apr 15 23:42 post-unlock.tmpl
--rw-r--r--. 1 root root 3426 Apr 15 23:42 pre-commit.tmpl            # 提交前触发
+-rw-r--r--. 1 root root 3426 Apr 15 23:42 pre-commit.tmpl             # 提交前触发
 -rw-r--r--. 1 root root 2434 Apr 15 23:42 pre-lock.tmpl
 -rw-r--r--. 1 root root 2786 Apr 15 23:42 pre-revprop-change.tmpl
 -rw-r--r--. 1 root root 2122 Apr 15 23:42 pre-unlock.tmpl
@@ -179,27 +180,27 @@ svn://{hostname}/{repo_name}
 
 应用
 
-+ 提交文件后自动推送到指定服务器发布路径 
++ 当客户端提交文件后 自动触发 jenkins 服务器执行构建命令 
 
 ```
-# 创建服务器路径
-mkdir -p /data/www
+cd /usr/local/svn/data/repo_ver1/hooks
 
-# 使用钩子模板
+# 使用钩子模板 提交后操作
 cp post-commit.tmpl post-commit
 
 # 写脚本
-# ...
+vim post-commit
+# 将模板中的自带内容全部注释
+# 添加如下触发命令
+
+# -X 指定请求方式
+# -v 显示命令
+# -u 携带用户名和密码
+# -H 携带请求头信息
+
+curl -X post -v -u admin:123456 http://192.168.127.111/job/project-x/build?token=X_TOKEN
 
 # 修改权限
-chmod 700 post-commit
+chmod 755 post-commit
 ```
-
-+ 提交文件后发送邮件
-
-```
-
-```
-
-
 
