@@ -5,13 +5,13 @@
 ## 下载并安装MySQL官方的 Yum Repository
 
 ```
-wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm
+wget http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm
 ```
 
 ## yum安装
 
 ```
-yum -y install mysql57-community-release-el7-10.noarch.rpm
+rpm -ivh mysql57-community-release-el7-10.noarch.rpm
 ```
 
 ## 安装MySQL服务器
@@ -50,8 +50,8 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY '{new-password}';
 # ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
 
 # 需要设置使用弱密码策略(如果不想用强密码策略)
-set global validate_password_policy=LOW # 仅检测长度
-set global validate_password_length=6;  # 长度大于等于6
+set global validate_password_policy=LOW;   # 仅检测长度
+set global validate_password_length=6;     # 长度大于等于6
 
 # 然后继续重置密码
 ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';
@@ -62,7 +62,10 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';
 ```
 # 开启指定 {IP} 的远程访问权限
 # 如果想开启所有IP的远程访问权限, 使用 `%` 代替 `{IP}`
+# 设置访问密码 {password}
 grant all privileges on *.* to 'root'@'{IP}' identified by '{password}' with grant option;
+# 例如：
+grant all privileges on *.* to 'root'@'%' identified by '123456' with grant option;
 
 # 刷新访问权限
 flush privileges;
@@ -103,8 +106,8 @@ Using delimiter:	;
 Server version:		5.7.29 MySQL Community Server (GPL)
 Protocol version:	10
 Connection:		Localhost via UNIX socket
-Server characterset:	latin1                                 <-- 注意需要修改为utf8
-Db     characterset:	latin1                                 <-- 注意需要修改为utf8
+Server characterset:	latin1                                 <-- 注意这里需要修改为utf8
+Db     characterset:	latin1                                 <-- 注意这里需要修改为utf8
 Client characterset:	utf8
 Conn.  characterset:	utf8
 UNIX socket:		/var/lib/mysql/mysql.sock
@@ -119,7 +122,7 @@ exit
 ### 修改字符集
 ```
 # 编辑配置文件
-vi /etc/my.cfg
+vi /etc/my.cnf
 
 # 修改内容如下
 --------------
