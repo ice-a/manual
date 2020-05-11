@@ -1,0 +1,141 @@
+# Linux环境安装Ruby
+
+## 下载 ruby
+
+```
+wget https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.6.tar.gz
+```
+
+## 解压
+```
+# 进入安装包目录 解压文件
+tar zvxf ruby-2.6.6.tar.gz
+```
+将解压文件放置到指定目录 
+```
+# 个人习惯安装到 /usr/local/maven/目录下
+mkdir -p /usr/local/ruby/ruby2.6
+```
+编译
+```
+# 安装编译环境
+yum -y install gcc tcl gcc-c++
+
+# 进入源码路径
+cd ruby-2.6.6/
+
+# 执行编译操作
+./configure --prefix=/usr/local/ruby/ruby2.6
+make && make install
+```
+验证安装结果
+```
+# 进入bin目录
+cd /usr/local/ruby/ruby2.6/bin/
+
+# 执行如下命令 查看控制台
+./ ruby -v
+```
+## 配置 ruby
+修改环境变量 
+```
+vim /etc/profile
+
+# 在最开始添加如下内容
+export RUBY_HOME=/usr/local/ruby/ruby2.6
+export PATH=$PATH:$RUBY_HOME/bin
+```
+使环境变量立即生效
+```
+source /etc/profile
+```
+查看是否配置成功
+
+```
+ruby -v
+```
+查看 ruby 路径
+
+```
+echo $RUBY_HOME
+```
+## 配置 gem 
+```
+# 移除自带源
+gem source -r https://rubygems.org/
+# 添加国内镜像源
+gem source -a https://gems.ruby-china.com/
+```
+**添加过程共可能出现问题如下：**
+
+```
+# install OpenSSL and rebuild Ruby (preferred) or use non-HTTPS sources (Gem::Exception)
+
+# 原因：没有安装 openssl
+# 解决办法：
+
+# 安装 openssl
+yum install openssl-devel -y
+
+# 进入源码解压目录
+cd /root/ruby-2.6.6/ext/openssl
+# 执行 如下命令
+ruby ./extconf.rb
+make && make install
+
+# 如果安装失败 提示如下内容：
+make: *** No rule to make target `/include/ruby.h', needed by `ossl.o'.  Stop.
+# 编辑 Makefile 文件
+vim Makefile
+# 在顶部添加如下内容
+top_srcdir = ../..
+# 保存退出
+:x
+# 重新执行
+make && make install
+
+# 重新添加国内镜像源
+gem source -a https://gems.ruby-china.com/
+```
+
+```
+# ERROR:  While executing gem ... (NameError)
+#     uninitialized constant Gem::RemoteFetcher::Zlib
+
+# 原因：没有安装 Zlib
+
+# 解决办法：
+# 安装 zlib
+yum install -y zlib-devel
+
+cd /root/ruby-2.6.6/ext/zlib
+ruby extconf.rb
+make && make install
+
+# 如果安装失败 提示如下内容：
+make: *** No rule to make target `/include/ruby.h', needed by `ossl.o'.  Stop.
+# 编辑 Makefile 文件
+vim Makefile
+# 在顶部添加如下内容
+top_srcdir = ../..
+# 保存退出
+:x
+# 重新执行
+make && make install
+
+# 重新添加国内镜像源
+gem source -a https://gems.ruby-china.com/
+```
+
+验证镜像源是否配置成功
+
+```
+# 执行命令
+gem source -l
+
+# 若显示结果如下，则证明配置成功
+*** CURRENT SOURCES ***
+
+https://gems.ruby-china.com/
+```
+
