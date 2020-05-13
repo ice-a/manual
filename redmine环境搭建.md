@@ -22,7 +22,7 @@ chmod +x bitnami-redmine-4.1.1-1-linux-x64-installer.run
 ## 配置
 常用服务管理命令
 ```
-# 进入安装目录
+# 进入安装目录（傻瓜式输入时指定的安装目录）
 cd /usr/local/redmine
 
 # 可用命令如下
@@ -33,6 +33,6 @@ cd /usr/local/redmine
 ./ctlscript.sh restart                     # 重启全部服务
 ```
 其他高级配置参考如下网站
-```
-https://docs.bitnami.com/general/apps/redmine/
-```
+
+[Bitnami Redmine Stack](https://docs.bitnami.com/general/apps/redmine/)
+
