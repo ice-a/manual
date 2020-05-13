@@ -1,7 +1,5 @@
 # Linux安装Redmine
 
-**默认你已经安好了 ruby 环境和 mysql 环境**
-
 ## 下载 redmine
 
 ```
