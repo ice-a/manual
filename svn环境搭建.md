@@ -1,11 +1,11 @@
-# SVN 环境搭建
+# Linux环境安装SVN
 
-## SVN软件安装
-安装命令
+## 安装
+执行如下安装命令
 ```
 yum -y install subversion
 ```
-## SVN配置
+## 配置
 创建目录
 ```
 # 存放数据
@@ -45,7 +45,7 @@ svnadmin help
 # 查看创建版本库帮助
 svnadmin help create
 
-# 创建 {repo_ver1} 版本库
+# 创建 <repo_ver1> 版本库
 svnadmin create /usr/local/svn/data/repo_ver1
 
 # 查看版本库结构
@@ -154,7 +154,7 @@ svnserve -d -r /usr/local/svn/data
 
 ```
 # 使用 tortoiseSVN 工具访问 
-svn://{hostname}/{repo_name}
+svn://<hostname>/<repo_name>
 ```
 
 ## svn钩子
@@ -162,7 +162,7 @@ svn://{hostname}/{repo_name}
 使用svn钩子可以在用户提交前或提交后进行一些操作
 
 ```
-# 钩子位置 {版本库目录}/hooks
+# 钩子位置 <版本库目录>/hooks
 cd /usr/local/svn/data/repo_ver1/hooks
 
 # 查看钩子模板 带有注释的比较常用

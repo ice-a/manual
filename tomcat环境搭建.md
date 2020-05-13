@@ -53,7 +53,7 @@ tail -f /usr/local/tomcat/tomcat8.5/logs/catalina.out
 ```
 访问 tomcat
 ```
-http://{HOST_NAME}}/
+http://<hostname>:<port>/
 ```
 ## 配置tomcat 控制台 <font color="red">可选</font>
 创建 tomcat 控制台用户

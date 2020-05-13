@@ -2,37 +2,37 @@
 
 在CentOS中默认安装有MariaDB(MySQL的分支)，但为了需要，还是要在系统中安装MySQL，而且安装完成之后可以直接覆盖掉MariaDB。
 
-## 下载并安装MySQL官方的 Yum Repository
+## 下载
 
 ```
 wget http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm
 ```
 
-## yum安装
+## rpm安装
 
 ```
 rpm -ivh mysql57-community-release-el7-10.noarch.rpm
 ```
 
-## 安装MySQL服务器
+## 安装
 
 安装完成后会自动覆盖掉之前的 mariadb.
 ```
 yum -y install mysql-community-server
 ```
 
-## 配置MYSQL
-###   启动MySQL
+## 配置
+###   启动服务
 ```
 systemctl start mysqld.service
 ```
 
-### 查看mysql运行状态
+### 查看运行状态
 ```
 systemctl status mysqld.service
 ```
 
-### 查看日志, 得到临时密码
+### 查看日志，得到临时密码
 ```
 grep "password" /var/log/mysqld.log
 ```
@@ -57,7 +57,7 @@ set global validate_password_length=6;     # 长度大于等于6
 ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';
 ```
 
-## 开启mysql的远程访问
+## 开启远程访问
 执行以下命令开启远程访问限制.
 ```
 # 开启指定 {IP} 的远程访问权限
@@ -83,7 +83,7 @@ firewall-cmd --zone=public --add-port=3306/tcp --permanent
 firewall-cmd --reload
 ```
 
-## 更改MYSQL字符集
+## 更改字符集
 ### 查看字符集
 ```
 # 登录mysql

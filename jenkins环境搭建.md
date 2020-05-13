@@ -1,4 +1,4 @@
-# Jenkins环境搭建
+# Linux环境安装Jenkins
 
 ## 安装JDK
 Jenkins运行需要java环境, 所以需要先安装 jdk
@@ -51,7 +51,7 @@ do
   JENKINS_JAVA_CMD="$candidate"
 done
 
-# 上述全部内容替换为固定java命令位置：(注意按个人情况修改路径)
+# 上述全部内容替换为固定 java 命令所在位置：(注意按个人情况修改路径)
 JENKINS_JAVA_CMD=usr/local/java/jdk1.8/bin/java
 ```
 ## 配置Jenkins
@@ -80,7 +80,7 @@ firewall-cmd --reload
 
 ```
 # 浏览器访问
-http://{hostname}:[port]/
+http://<hostname>:<port>/
 
 # jenkins 发布路径
 ll /var/lib/jenkins/
@@ -131,13 +131,13 @@ cd /var/lib/jenkins/updates
 sed -i 's/http:\/\/updates.jenkins-ci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g' default.json && sed -i 's/http:\/\/www.google.com/https:\/\/www.baidu.com/g' default.json
 
 # 浏览器访问地址 等待刷新完成
-http://{hostname}:[port]/pluginManager/available
+http://<hostname>:<port>/pluginManager/available
 
 # 重启服务
 systemctl restart jenkins
 
 # 浏览器访问地址
-http://{hostname}:[port]/pluginManager/advanced
+http://<hostname>:<port>/pluginManager/advanced
 ```
 
 ## 下载插件失败解决
@@ -167,25 +167,35 @@ Jenkins有各种各样的插件用于管理和构建任务，因为之前安装�
 
 ### 权限管理插件
 
+```
 Jenkins默认权限管理粒度特别粗，无法实现精准的权限控制，所以需要安装插件解决企业级权限控制问题。
 
 插件名称：Role-based Authorization Strategy
+```
 
 ### 凭证管理插件
 
+```
 凭据可以用来存储需要密文保护的数据库密码、Gitlab密码信息、Docker私有仓库密码等，以便Jenkins可以和这些第三方的应用进行交互。
 
 插件名称：Credentials Binding
+```
 
 ## SVN插件
 
-用于从连接访问远程 svn  并将远程svn目录内容拉取到jenkins目录。
+```
+用于从连接访问远程 svn  并将远程 svn 目录内容拉取到 jenkins 目录。
 
 插件名称： Subversion
+```
 
 ## 容器管理插件 
 
-用于将项目发布到指定的 web 容器
+```
+用于将项目发布到指定的 web 容器.
 
 插件名称：Deploy to container
+```
+
+
 

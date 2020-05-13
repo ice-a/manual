@@ -1,4 +1,4 @@
-# Linux安装Redmine
+# Linux环境安装Redmine
 
 ## 下载 redmine
 

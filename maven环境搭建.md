@@ -2,9 +2,9 @@
 
 ## 前提条件
 
-**默认你已经安装好了JDK 如果没有安装JDK  请先去安装JDK**
+**默认你已经安装好了JDK 如果没有安装JDK，请先去安装JDK**
 
-## 下载maven
+## 下载
 
 ```
 wget http://mirror.bit.edu.cn/apache/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz
@@ -23,7 +23,7 @@ cp -r apache-maven-3.6.1 /usr/local/maven/maven3.6.1
 # 创建 maven 本地仓库目录
 mkdir -p /usr/local/maven/maven3.6.1/repo
 ```
-## 配置 maven
+## 配置
 编辑配置文件
 ```
 vim /usr/local/maven/maven3.6.1/conf/settings.xml
