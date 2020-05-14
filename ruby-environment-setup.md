@@ -1,6 +1,6 @@
 # Linux环境安装Ruby
 
-## 下载 ruby
+## 下载
 
 ```SHELL
 wget https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.6.tar.gz
