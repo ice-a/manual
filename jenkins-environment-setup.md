@@ -148,8 +148,6 @@ http://<hostname>:<port>/pluginManager/advanced
 https://mirrors.tuna.tsinghua.edu.cn/jenkins
 ```
 
-
-
 ## 卸载Jenkins
 
 ```SHELL
@@ -196,6 +194,3 @@ Jenkins默认权限管理粒度特别粗，无法实现精准的权限控制，�
 
 插件名称：Deploy to container
 ```
-
-
-
