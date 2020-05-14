@@ -110,16 +110,17 @@ systemctl restart jenkins
 
 ## 查看初始密码
 
-````SHELL
+```SHELL
 # 查看自动生成的密码
 cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
+
 **注意 不要安装任何插件 等到镜像配置好了再按需要安装插件**
+
 ## 添加管理员用户
 按提示输入用户名密码就好
 
 ## 实例配置
-
 默认就好
 
 ## 初始化Jenkins
