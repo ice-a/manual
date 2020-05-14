@@ -4,7 +4,7 @@
 
 ## IP地址修改
 
-```
+```SHELL
 # 切换为根用户
 su root
 
@@ -26,7 +26,7 @@ systemctl restart network
 
 ## 关闭图形界面
 CentOS6
-```
+```SHELL
 # 编辑指定配置文件
 vim /etc/inittab
 
@@ -35,7 +35,7 @@ vim /etc/inittab
 id:3:initdefault:
 ```
 CentOS7
-```
+```SHELL
 # 默认启动命令行页面
 systemctl set-default multi-user.target
 
@@ -47,7 +47,7 @@ systemctl set-default graphical.target
 
 ### 防火墙设置
 
-```
+```SHELL
 # 关闭防火墙
 systemctl stop firewalld
 # 禁用防火墙(执行禁用不会关闭正在运行的防火墙)
@@ -60,17 +60,17 @@ systemctl restart firewalld
 ```
 
 ### 查看防火墙状态信息
-```
+```SHELL
 systemctl status firewalld
 ```
 
 ### 查看防火墙是否开启
-```
+```SHELL
 firewall-cmd --state
 ```
 
 ### 防火墙详细配置
-```
+```SHELL
 # 查询端口是否开放
 firewall-cmd --query-port=8080/tcp
 
@@ -96,7 +96,7 @@ firewall-cmd --reload
 
 ## 配置yum源
 
-```
+```SHELL
 # 进入yum源配置文件路径
 cd /etc/yum.repos.d
 
@@ -119,89 +119,89 @@ yum makecache
 
 ### 修改主机名
 
-```
+```SHELL
 # 编辑指定配置文件
 vim /etc/sysconfig/network
 
 # 修改为自定义的主机名
-# HOSTNAME={hostname}
+# HOSTNAME=<hostname>
 
 # 使配置立即生效
-hostname {hostname}
+hostname <hostname>
 # 重新登录后生效
 exit
 ```
 
 ### 主机名绑定IP地址
 
-```
+```SHELL
 # 编辑指定配置文件
 vim etc/hosts
 
-# 绑定ip和主机
-192.168.1.111 {hostname}
+# 绑定 ip 和主机
+192.168.1.111 <hostname>
 
 # 保存退出后 验证
-ping {hostname}
+ping <hostname>
 ```
 
 
 ## 用户操作
 
 ### 新增用户
-```
-useradd {username} [-m] [-g] {groupname} {username}
+```SHELL
+useradd <username> [-m] [-g] <groupname> <username>
     # -m 创建用户同时自动创建家目录
-    # -g {group} 设置用户所属组  不加默认 以用户名作为所属组
+    # -g <group> 设置用户所属组  不加默认 以用户名作为所属组
 ```
 ### 修改密码
 
 普通用户密码修改
-```
+```SHELL
 su - root # 获取root权限
-passwd {username} # 如 passwd user1 
+passwd <username> # 如 passwd user1 
 # 输入两遍新密码
 ```
 超级用密码修改 
-```
+```SHELL
 passwd 超级用户名 # 如 passwd root
 # 输入两遍新密码  
 ```
 
 ### 修改用户
-```
+```SHELL
 /var/run/utmp
 # 修改指定用户用户名 (重启后执行)
-usermod -l {username} -d /home/{username} -m {username-old}
+usermod -l <username> -d /home/<username> -m <username-old>
 ```
 
 ### 修改用户组
 
-```
+```SHELL
 # 修改用户主组信息, 即 /etc/passwd 文件中的用户组信息(不常用) 
-usermod -g {groupname} {username}
+usermod -g <groupname> <username>
 
 # 修改用户附属组信息, 即 /etc/group 文件中的用户组信息(常用)
-usermod -G {groupname} {username}       
+usermod -G <groupname> <username>       
 # 为张三添加 sudo 权限
-# zhangsan 需要重新登录, 才会有sudo权限 
+# zhangsan 需要重新登录, 才会有 sudo 权限 
 usermod -G sudo zhangsan   
 ```
 
 ### 删除用户
 
-```
+```SHELL
 /var/run/utmp
 
 # 删除指定用户 (重启后执行)
-usrdel [-r] {username} # -r 同时删除家目录  
+usrdel [-r] <username> # -r 同时删除家目录  
 
-# 如果没有使用-r, 可以进入`/home`, 手动删除家目录
-rm -rf /home/{username}
+# 如果没有使用 -r, 可以进入`/home`, 手动删除家目录
+rm -rf /home/<username>
 ```
 
-## ping命令
-```
+## ping 命令
+```SHELL
 # 编辑指定配置文件
 vim /etc/sysctl.conf
 
@@ -215,10 +215,11 @@ net.ipv4.icmp_echo_ignore_all=1
 sysctl -p
 ```
 
-## window文件字符集处理
+## window 文件字符集处理
 
 windows平台上编辑后的脚本文件放到linux中, 需要使用dos2unix工具处理一下
 
-```
+```SHELL
 dos2unix filename
 ```
+

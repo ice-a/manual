@@ -2,19 +2,19 @@
 
 ## 安装
 执行如下安装命令
-```
+```SHELL
 yum -y install subversion
 ```
 ## 配置
 创建目录
-```
+```SHELL
 # 存放数据
 mkdir -p /usr/local/svn/data
 # 存放授权配置
 mkdir -p /usr/local/svn/conf
 ```
 启动服务
-```
+```SHELL
 # -d 守护进程形式
 # -r 指定数据存放目录
 # 更多配置 --help
@@ -23,13 +23,13 @@ svnserve -d -r /usr/local/svn/data
 
 查看进程
 
-```
+```SHELL
 ps -ef|grep svn
 ```
 
 查看端口
 
-```
+```SHELL
 # svn 默认端口 3690
 netstat -lntup|grep 3690
 lsof -i tcp:3690
@@ -38,7 +38,7 @@ lsof -i :3690
 
 创建版本库 svnadmin
 
-```
+```SHELL
 # 查看帮助
 svnadmin help
 
@@ -55,7 +55,7 @@ tree /usr/local/svn/data/repo_ver1
 
 版本库配置管理
 
-```
+```SHELL
 # 配置文件位置
 cd /usr/local/svn/data/repo_ver1/conf
 
@@ -90,26 +90,26 @@ vim svnserve.conf
 
 检查变更内容
 
-```
+```SHELL
 diff svnserve.conf svnserve.conf.ori
 ```
 
 拷贝配置文件到统一管理配置目录
 
-```
+```SHELL
 cp passwd authz /usr/local/svn/conf
 ```
 
 修改权限
 
-```
+```SHELL
 cd /usr/local/svn/conf/
 chmod 700 *
 ```
 
 添加用户
 
-```
+```SHELL
 vim passwd
 # 在 [users] 中插入一行， 格式: [用户名 = 密码]
 caoshd = 123456
@@ -121,7 +121,7 @@ jenkins = 123456
 
 添加权限
 
-```
+```SHELL
 vim authz
 # 新增用户组
 [groups]
@@ -136,14 +136,14 @@ cao.shd = rw  # 单独给用户读写权限
 
 提示
 
-```
+```SHELL
 # 更改 svnserve.conf 文件，需要重启服务。
 # 更改 passwd authz 文件，不需要重启服务。
 ```
 
 重启svn服务
 
-```
+```SHELL
 # 杀死服务
 pkill svnserve
 # 启动服务
@@ -152,7 +152,7 @@ svnserve -d -r /usr/local/svn/data
 
 访问地址
 
-```
+```SHELL
 # 使用 tortoiseSVN 工具访问 
 svn://<hostname>/<repo_name>
 ```
@@ -161,7 +161,7 @@ svn://<hostname>/<repo_name>
 
 使用svn钩子可以在用户提交前或提交后进行一些操作
 
-```
+```SHELL
 # 钩子位置 <版本库目录>/hooks
 cd /usr/local/svn/data/repo_ver1/hooks
 
@@ -182,7 +182,7 @@ ll
 
 + 当客户端提交文件后 自动触发 jenkins 服务器执行构建命令 
 
-```
+```SHELL
 cd /usr/local/svn/data/repo_ver1/hooks
 
 # 使用钩子模板 提交后操作
@@ -203,4 +203,3 @@ curl -X post -v -u admin:123456 http://192.168.127.111/job/project-x/build?token
 # 修改权限
 chmod 755 post-commit
 ```
-

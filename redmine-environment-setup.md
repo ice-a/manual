@@ -2,13 +2,13 @@
 
 ## 下载 redmine
 
-```
+```SHELL
 wget https://downloads.bitnami.com/files/stacks/redmine/4.1.1-1/bitnami-redmine-4.1.1-1-linux-x64-installer.run
 ```
 
 ## 授予执行权限
 
-```
+```SHELL
 chmod +x bitnami-redmine-4.1.1-1-linux-x64-installer.run
 ```
 
@@ -16,12 +16,12 @@ chmod +x bitnami-redmine-4.1.1-1-linux-x64-installer.run
 
 按照提示一路傻瓜式输入即可。
 
-```
+```SHELL
 ./bitnami-redmine-4.1.1-1-linux-x64-installer.run
 ```
 ## 配置
 常用服务管理命令
-```
+```SHELL
 # 进入安装目录（傻瓜式输入时指定的安装目录）
 cd /usr/local/redmine
 

@@ -4,47 +4,47 @@
 
 ## 下载
 
-```
+```SHELL
 wget http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm
 ```
 
 ## rpm安装
 
-```
+```SHELL
 rpm -ivh mysql57-community-release-el7-10.noarch.rpm
 ```
 
 ## 安装
 
 安装完成后会自动覆盖掉之前的 mariadb.
-```
+```SHELL
 yum -y install mysql-community-server
 ```
 
 ## 配置
 ###   启动服务
-```
+```SHELL
 systemctl start mysqld.service
 ```
 
 ### 查看运行状态
-```
+```SHELL
 systemctl status mysqld.service
 ```
 
 ### 查看日志，得到临时密码
-```
+```SHELL
 grep "password" /var/log/mysqld.log
 ```
 ### 登录数据库
-```
+```SHELL
 mysql -uroot -p
 # 输入上面取得的临时密码
 ```
 ### 修改新密码
-```
-# 把{new-password}替换成要设置的密码
-ALTER USER 'root'@'localhost' IDENTIFIED BY '{new-password}';
+```SHELL
+# 把 <new-password> 替换成要设置的密码
+ALTER USER 'root'@'localhost' IDENTIFIED BY '<new-password>';
 
 # 当出现如下错误时,
 # ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
@@ -59,11 +59,11 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';
 
 ## 开启远程访问
 执行以下命令开启远程访问限制.
-```
-# 开启指定 {IP} 的远程访问权限
-# 如果想开启所有IP的远程访问权限, 使用 `%` 代替 `{IP}`
-# 设置访问密码 {password}
-grant all privileges on *.* to 'root'@'{IP}' identified by '{password}' with grant option;
+```SHELL
+# 开启指定 <IP> 的远程访问权限
+# 如果想开启所有 IP 的远程访问权限, 使用 `%` 代替 `<IP>`
+# 设置访问密码 <password>
+grant all privileges on *.* to 'root'@'<IP>' identified by '<password>' with grant option;
 # 例如：
 grant all privileges on *.* to 'root'@'%' identified by '123456' with grant option;
 
@@ -76,7 +76,7 @@ exit
 
 ##  配置防火墙
 防火墙开放MYSQL端口(3306) 和tomcar
-```
+```SHELL
 firewall-cmd --zone=public --add-port=3306/tcp --permanent
 
 # 使配置立即生效
@@ -85,7 +85,7 @@ firewall-cmd --reload
 
 ## 更改字符集
 ### 查看字符集
-```
+```SHELL
 # 登录mysql
 mysql -u root -p
 
@@ -120,9 +120,9 @@ Threads: 3  Questions: 40  Slow queries: 0  Opens: 122  Flush tables: 1  Open ta
 exit
 ```
 ### 修改字符集
-```
+```SHELL
 # 编辑配置文件
-vi /etc/my.cnf
+vim /etc/my.cnf
 
 # 修改内容如下
 --------------

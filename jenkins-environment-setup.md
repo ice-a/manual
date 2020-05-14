@@ -3,7 +3,7 @@
 ## 安装JDK
 Jenkins运行需要java环境, 所以需要先安装 jdk
 
-```
+```SHELL
 # 安装 openjdk
 yum install java-1.8.0-openjdk* -y
 
@@ -18,19 +18,19 @@ ll /usr/lib/jvm/
 官网地址:  `https://jenkins.io/zh/`
 **注意每次去官方取发布的最新稳定版 防止装完以后许多插件用不了 还得继续升级**
 
-```
+```SHELL
 # 如果访问特别慢 建议使用迅雷等工具离线下载安装
 wget https://pkg.jenkins.io/redhat-stable/jenkins-2.222.1-1.1.noarch.rpm
 ```
 ### 安装
-```
+```SHELL
 rpm -ivh jenkins-2.222.1-1.1.noarch.rpm
 ```
 **本质上在`/var/lib/jenkins/`路径下发布了一个jenkins的war包**
 
 ## 如果<font color="red">未使用</font>OpenJDK，自行配置Java位置
 
-```
+```SHELL
 # 修改启动脚本
 vim /etc/init.d/jenkins
 
@@ -56,7 +56,7 @@ JENKINS_JAVA_CMD=usr/local/java/jdk1.8/bin/java
 ```
 ## 配置Jenkins
 
-```
+```SHELL
 # 编辑配置文件
 vim /etc/sysconfig/jenkins
 
@@ -70,7 +70,7 @@ systemctl start jenkins
 ```
 ## 配置防火墙
 
-```
+```SHELL
 # 端口 {port} = 80 
 firewall-cmd --zone=public --add-port={port}/tcp --permanent
 firewall-cmd --reload
@@ -78,7 +78,7 @@ firewall-cmd --reload
 
 ## 访问Jenkins
 
-```
+```SHELL
 # 浏览器访问
 http://<hostname>:<port>/
 
@@ -88,7 +88,7 @@ ll /var/lib/jenkins/
 
 **问题及解决办法**
 
-```
+```SHELL
 1. 如果页面出现 Please wait while Jenkins is getting ready to work, 并且长时间无反应:
 
 # 修改配置文件中的 url 为国内镜像地址
@@ -110,7 +110,7 @@ systemctl restart jenkins
 
 ## 查看初始密码
 
-````
+````SHELL
 # 查看自动生成的密码
 cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
@@ -124,7 +124,7 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 
 ## 初始化Jenkins
 
-```
+```SHELL
 # 修改插件地址
 cd /var/lib/jenkins/updates
 
@@ -144,7 +144,7 @@ http://<hostname>:<port>/pluginManager/advanced
 
 即使配置了镜像地址， 依然可能出现镜像下载失败的情况。注意查看报错信息 然后去如下地址下载指定的镜像，然后手动安装
 
-```
+```SHELL
 https://mirrors.tuna.tsinghua.edu.cn/jenkins
 ```
 
@@ -152,7 +152,7 @@ https://mirrors.tuna.tsinghua.edu.cn/jenkins
 
 ## 卸载Jenkins
 
-```
+```SHELL
 # rpm卸载
 rpm -e jenkins
 # 检查是否卸载成功

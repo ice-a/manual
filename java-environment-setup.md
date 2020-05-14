@@ -1,11 +1,11 @@
 # Linux环境安装JDK
 ## 检查Java环境
 运行如下命令，查看系统是否已经安装了 JDK。
-```
+```SHELL
 java -version
 ```
 如果显示结果如下， 则证明系统已默认安装了 OpenJDK。
-```
+```SHELL
 openjdk version "1.8.0_161"
 OpenJDK Runtime Environment (build 1.8.0_161-b14)
 OpenJDK 64-Bit Server VM (build 25.161-b14, mixed mode)
@@ -13,11 +13,11 @@ OpenJDK 64-Bit Server VM (build 25.161-b14, mixed mode)
 如果对Java环境无特殊要求， 可直接使用系统自带的OpenJDK，不必继续阅读此文档。
 ## 卸载OpenJDK
 检查 OpenJDK 安装包，运行如下命令：
-```
+```SHELL
 rpm -qa | grep java 
 ```
 系统显示结果如下：
-```
+```SHELL
 java-1.8.0-openjdk-headless-1.8.0.161-2.b14.el7.x86_64
 tzdata-java-2018c-1.el7.noarch
 python-javapackages-3.4.1-11.el7.noarch
@@ -25,15 +25,15 @@ javapackages-tools-3.4.1-11.el7.noarch
 java-1.8.0-openjdk-1.8.0.161-2.b14.el7.x86_64
 ```
 卸载OpenJDK，运行如下命令：
-```
+```SHELL
 yum remove *openjdk* -y
 ```
 查看卸载情况，再次输入上述检查命令：
-```
+```SHELL
 rpm -qa | grep java 
 ```
 若显示结果如下，则证明已成功卸载系统自带OpenJDK。
-```
+```SHELL
 tzdata-java-2018c-1.el7.noarch
 python-javapackages-3.4.1-11.el7.noarch
 javapackages-tools-3.4.1-11.el7.noarch
@@ -43,7 +43,7 @@ javapackages-tools-3.4.1-11.el7.noarch
 获取想要安装的JDK版本  (官网下载并上传到指定目录)。
 进入JDK安装包目录，解压安装包。
 
-```
+```SHELL
 # 创建jdk安装目录
 # 本人习惯安装到 /usr/local/java 文件夹下 可按个人习惯自行选择安装位置
 mkdir -p /usr/local/java
@@ -54,7 +54,7 @@ cd /usr/local/java
 mv jdk1.8.0_161/ jdk1.8
 ```
 设置环境变量。
-```
+```SHELL
 vim /etc/profile
 
 # 在配置文件最前面添加如下脚本
@@ -65,14 +65,15 @@ export PATH=$PATH:$JAVA_HOME/bin
 :x
 ```
 使环境变量立马生效。
-```
+```SHELL
 source /etc/profile
 ```
 检查是否安装成功。
-```
+```SHELL
 java -version
 ```
 输出配置的环境变量。
-```
+```SHELL
 echo $JAVA_HOME
 ```
+
