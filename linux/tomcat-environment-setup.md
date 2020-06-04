@@ -23,14 +23,14 @@ cp -r apache-tomcat-8.5.54 /usr/local/tomcat/tomcat8.5
 ```SHELL
 vim /usr/local/tomcat/tomcat8.5/conf/server.xml
 ```
-修改 tomcat 端口 和 字符集
+修改 tomcat 端口 和 字符集  <font color="red">按个人需求</font>
 ```XML
     <Connector port="80" protocol="HTTP/1.1"
                connectionTimeout="20000"
                redirectPort="8443"
                URIEncoding="UTF-8"/>
 ```
-修改环境变量 
+添加环境变量 <font color="red">按个人需求</font>
 ```SHELL
 vim /etc/profile
 
@@ -44,8 +44,16 @@ source /etc/profile
 ```
 启动 tomcat 
 ```SHELL
-# 任意路径下
+# 如果已配置环境变量 则可以在任意路径下执行如下命令
 startup.sh
+
+# 如果未配置环境变量
+
+# 进入 tomcat 解压目录
+cd /usr/local/tomcat/tomcat8.5/bin
+
+# 执行启动命令
+./startup.sh
 ```
 查看启动日志
 ```SHELL
