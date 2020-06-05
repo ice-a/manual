@@ -2,21 +2,26 @@
 
 ## 前提条件
 **默认你已经安装好了JDK 如果没有安装JDK  请先去安装JDK**
+
 ## 下载 tomcat
 ```SHELL
-wget https://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz
+# 国内下载使用如下镜像地址
+wget https://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.5.55/bin/apache-tomcat-8.5.55.tar.gz
+
+# aws 使用如下官网地址
+wget https://downloads.apache.org/tomcat/tomcat-8/v8.5.55/bin/apache-tomcat-8.5.55.tar.gz
 ```
 ## 解压
 ```SHELL
 # 进入安装包目录 解压文件
-tar zvxf apache-tomcat-8.5.54.tar.gz
+tar zvxf apache-tomcat-8.5.55.tar.gz
 ```
 将解压文件放置到指定目录 
 ```SHELL
 # 个人习惯安装到 /usr/local/tomcat/目录下
 mkdir -p /usr/local/tomcat/
 # 执行复制操作
-cp -r apache-tomcat-8.5.54 /usr/local/tomcat/tomcat8.5
+cp -r apache-tomcat-8.5.55 /usr/local/tomcat/tomcat8.5
 ```
 ## 配置 tomcat
 编辑配置文件
