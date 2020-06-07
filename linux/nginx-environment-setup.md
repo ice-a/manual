@@ -57,15 +57,16 @@ wget http://nginx.org/download/nginx-1.18.0.tar.gz
 ### 解压安装包
 
 ```shell
-tar -zxvf nginx-1.8.0.tar.gz
+# 执行解压命令
+tar -zxvf nginx-1.18.0.tar.gz
 
 # 进入解压目录
-cd nginx-1.8.0
+cd nginx-1.18.0
 ```
 
 ### 编译生成 makefile
 
-```
+```shell
 # 使用 --prefix 设置 nginx 安装目录, 可根据个人习惯自行设置
 ./configure \
 --prefix=/usr/local/nginx \
