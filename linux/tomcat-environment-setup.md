@@ -54,21 +54,49 @@ startup.sh
 
 # 如果未配置环境变量
 
-# 进入 tomcat 解压目录
-cd /usr/local/tomcat/tomcat8.5/bin
-
 # 执行启动命令
-./startup.sh
+/usr/local/tomcat/tomcat8.5/bin/startup.sh
 ```
+问题
+
+```shell
+# 启动过程中可能出现如下问题
+[ec2-user@ip-172-31-4-175 tomcat8.5]$ sudo /usr/local/tomcat/tomcat8.5/bin/startup.sh
+Neither the JAVA_HOME nor the JRE_HOME environment variable is defined
+At least one of these environment variable is needed to run this program
+
+# 解决办法
+# 查看当前JAVA_HOME配置
+echo $JAVA_HOME
+# 显示如下
+/usr/local/java/jdk1.8
+
+# 编辑配置文件
+sudo vim /usr/local/tomcat/tomcat8.5/bin/catalina.sh
+
+# 在配置文件头部加入JAVA_HOME信息
+export JAVA_HOME=/usr/local/java/jdk1.8
+```
+
 查看启动日志
+
 ```SHELL
 tail -f /usr/local/tomcat/tomcat8.5/logs/catalina.out
 ```
-访问 tomcat
+访问 tomcat:
+
 ```SHELL
 http://<hostname>:<port>/
 ```
-## 配置tomcat 控制台 <font color="red">可选</font>
+
+<font color="red">✨Tips: </font>
+
+<font color="red">1. 注意打开防火墙8080端口，外网才可访问</font>
+
+<font color="red">2. aws 使用安全组管理网络访问权限，外网访问注意配置入站规则。</font>
+
+
+## 配置tomcat 控制台 <font color="red">可选*</font>
 创建 tomcat 控制台用户
 ```XML
 # 编辑用户角色配置文件
