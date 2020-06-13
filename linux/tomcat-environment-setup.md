@@ -4,7 +4,12 @@
 **默认你已经安装好了JDK 如果没有安装JDK  请先去安装JDK**
 
 ## 下载 tomcat
+
+**因 tomcat 官网每次更新都会使之前的地址失效 所以具体位置请查看: [官网下载地址](https://tomcat.apache.org/download-80.cgi)**
+
 ```SHELL
+# 以下下载地址仅供参考 具体以官网实际下载位置为准
+
 # 国内下载使用如下镜像地址
 wget https://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.5.55/bin/apache-tomcat-8.5.55.tar.gz
 
