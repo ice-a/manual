@@ -305,19 +305,19 @@ docker load < <镜像名称>.tar
 
 > 导入导出和保存载入的区别
 > 1. 文件大小不同
->   export 导出的镜像文件体积小于 save 保存的镜像
+>     export 导出的镜像文件体积小于 save 保存的镜像
 >
 > 2. 是否可以对镜像重命名
->   docker import 可以为镜像指定新名称
->   docker load 不能对载入的镜像重命名
+>     docker import 可以为镜像指定新名称
+>     docker load 不能对载入的镜像重命名
 >
 > 3. 是否可以同时将多个镜像打包到一个文件中
->   docker export 不支持
->   docker save 支持
+>     docker export 不支持
+>     docker save 支持
 >
 > 4. 是否包含镜像历史
->   export 导出（import 导入）是根据容器拿到的镜像，再导入时会丢失镜像所有的历史记录和元数据信息（即仅保存容器当时的快照状态），所以无法进行回滚操作。
->   而 save 保存（load 加载）的镜像，没有丢失镜像的历史，可以回滚到之前的层（layer）。
+>     export 导出（import 导入）是根据容器拿到的镜像，再导入时会丢失镜像所有的历史记录和元数据信息（即仅保存容器当时的快照状态），所以无法进行回滚操作。
+>     而 save 保存（load 加载）的镜像，没有丢失镜像的历史，可以回滚到之前的层（layer）。
 >
 > 5. 应用场景不同
 >
@@ -602,4 +602,3 @@ docker build -t xbot:latest .
 ```bash
 docker -run -d -p 80:8080 xbot
 ```
-## 镜
