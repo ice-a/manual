@@ -10,7 +10,7 @@ uname -r
 cat /etc/os-release
 ```
 
-## 安装
+## CentOS安装
 
 卸载已经安装的旧版本的 docker
 
@@ -90,6 +90,49 @@ yum remove docker-ce docker-ce-cli containerd.io
 sudo rm -rf /var/lib/docker
 ```
 
+## Ubuntu安装
+
+环境准备
+```bash
+# 工具
+sudo apt-get -y install \
+  apt-transport-https \
+  ca-certificates \
+  curl
+
+# https
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+```
+
+仓库追加
+```bash
+# 添加仓库
+sudo add-apt-repository \
+       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+       $(lsb_release -cs) \
+       stable"
+
+# 更新仓库
+sudo apt-get update
+```
+
+安装最新版
+```bash
+sudo apt-get -y install docker-ce
+```
+
+测试安装结果
+```bash
+sudo docker version
+```
+
+启动停止服务
+```bash
+sudo service docker start
+sudo service docker stop
+sudo service docker restart
+```
+
 ## 常用命令
 
 ### 帮助命令
@@ -97,7 +140,7 @@ sudo rm -rf /var/lib/docker
 ```shell
 docker version           # 查看 docker 版本信息
 docker info              # 显示 docker 系统信息, 包括镜像和容器的数量
-docker {命令名} --help    # 帮助命令
+docker <命令名> --help    # 帮助命令
 ```
 
 ### 镜像命令
@@ -115,7 +158,7 @@ docker images      # 查看全部正在运行镜像
 + 搜索镜像
 
 ```shell
-docker search {镜像名称}   # 搜索指定名称的镜像
+docker search <镜像名称>   # 搜索指定名称的镜像
 
 # 可选项
   --filter=STARS=3000    # 列出收藏数大于3000的镜像
@@ -131,7 +174,7 @@ mariadb             MariaDB is a community-developed fork of MyS…   3478      
 + 下载镜像
 
 ```shell
-docker pull {镜像名称:[tag]}          # 下载指定名称的镜像
+docker pull <镜像名称:[tag]>          # 下载指定名称的镜像
 
 # 说明
 # 如果不写 tag, 默认使用 latest (最新版)
@@ -163,9 +206,9 @@ docker images
 + 删除镜像
 
 ```shell
-docker rmi -f {镜像ID}                                # 删除指定镜像
-docker rmi -f {镜像id1} {镜像id2}                     # 删除多个指定镜像
-docker rmi -f $(docker images -qa)                   # 删除全部镜像
+docker rmi -f <镜像ID>                                # 删除指定镜像
+docker rmi -f <镜像id1> <镜像id2>                      # 删除多个指定镜像
+docker rmi -f $(docker images -qa)                    # 删除全部镜像
 ```
 
 ### 容器命令
@@ -176,7 +219,7 @@ docker rmi -f $(docker images -qa)                   # 删除全部镜像
 docker run [可选参数] image
 
 # 参数说明
---name="{NAME}"             # 容器的名字 用于区分容器 自定义
+--name="<NAME>"             # 容器的名字 用于区分容器 自定义
 -d                          # 以后台方式运行
 -it                         # 使用交互方式运行, 进入容器查看内容
 -p                          # 指定容器端口映射
@@ -193,7 +236,7 @@ docker run -it centos /bin/bash
 [root@bf9dff6cc742 /]# ls
 bin  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 
-# 退出 (容器会停止) 
+# 退出 (容器会停止)
 exit
 ```
 
@@ -218,19 +261,66 @@ ctrl + P + Q                     # 退出不停止容器
 + 删除容器
 
 ```shell
-docker rm {容器ID}              # 删除指定容器 (不能删除正在运行容器， -f: 强制删除)
+docker rm <容器ID>              # 删除指定容器 (不能删除正在运行容器， -f: 强制删除)
 docker rm $(docker ps -aq)     # 删除全部容器
 ```
 
 + 启动和停止容器
 
 ```shell
-docker start {容器ID}       # 启动容器
-docker restart {容器ID}     # 重启容器
-docker stop {容器ID}        # 停止容器
-docker kill {容器ID}        # 强制关闭容器
+docker start <容器ID>       # 启动容器
+docker restart <容器ID>     # 重启容器
+docker stop <容器ID>        # 停止容器
+docker kill <容器ID>        # 强制关闭容器
 ```
 
++ 导出**容器**
+```bash
+docker export <容器ID> > <容器名称>.tar
+# 例如
+docker export tomcat > tomcat.tar
+```
+
++ 导入**容器**
+```bash
+docker import - <容器名称> < <容器全路径.tar>
+
+# 例如
+docker import - tomcat < tomcat.tar
+```
+
++ 保存**镜像**
+```bash
+# 保存单个镜像
+docker save <镜像ID> > <镜像名称>.tar
+
+# 保存多个镜像
+docker save -o <镜像名称>.tar <镜像ID2> <镜像ID2>
+```
+
++ 载入**镜像**
+```bash
+docker load < <镜像名称>.tar
+```
+
+> 导入导出和保存载入的区别
+> 1. 文件大小不同
+> export 导出的镜像文件体积小于 save 保存的镜像
+> 2. 是否可以对镜像重命名
+> docker import 可以为镜像指定新名称
+> docker load 不能对载入的镜像重命名
+> 3. 是否可以同时将多个镜像打包到一个文件中
+> docker export 不支持
+> docker save 支持
+> 4. 是否包含镜像历史
+> export 导出（import 导入）是根据容器拿到的镜像，再导入时会丢失镜像所有的历史记录和元数据信息（即仅保存容器当时的快照状态），所以无法进行回滚操作。
+> 而 save 保存（load 加载）的镜像，没有丢失镜像的历史，可以回滚到之前的层（layer）。
+> 5. 应用场景不同
+> **export 应用场景**
+> 从一个 ubuntu 镜像启动一个容器，然后安装一些软件并进行一些设置后，使用 docker export 保存为一个基础镜像。然后把这个镜像分发给其他人使用，作为基础的开发环境。
+> **save 的应用场景**
+> 应用使用 docker-compose.yml 编排的多个镜像的组合，但是要部署的客户服务器并不能连外网。这时就可以使用 docker save 将用到的镜像打个包，然后拷贝到客户服务器上使用 docker load 载入。
+>
 ### 其他命令
 
 + 后台启动容器
@@ -254,25 +344,25 @@ nginx 容器启动后 发现没有提供服务 自动就停止。
 + 查看日志
 
 ```shell
-docker logs -tf --tail 10 {容器ID}    查看指定容器最近十条日志
+docker logs -tf --tail 10 <容器ID>    查看指定容器最近十条日志
 
-# 测试 
+# 测试
 # 编写测试脚本
 docker run -d centos /bin/sh -c "while true; do echo helloworld; sleep 1; done"
 
 # 查看正在运行容器
 docker ps
 # 显示如下
-5583aeb20df7 
+5583aeb20df7
 
 # 查看容器日志
 docker logs -tf --tail 10 5583aeb20df7
 ```
 
-+ 查看容器中进程信息
++ 查看容器内部进程信息
 
 ```shell
-docker top {容器ID}
+docker top <容器ID>
 
 # 测试
 docker top bf9dff6cc742
@@ -290,218 +380,98 @@ docker inspect bf9dff6cc742
 # 显示如下
 [
     {
-        "Id": "bf9dff6cc7423fe3cd324984e4b430fc3de0835d45e3430c94144638269e749d",
-        "Created": "2020-06-03T12:46:16.26997503Z",
-        "Path": "/bin/bash",
-        "Args": [],
-        "State": {
-            "Status": "running",
-            "Running": true,
-            "Paused": false,
-            "Restarting": false,
-            "OOMKilled": false,
-            "Dead": false,
-            "Pid": 32139,
-            "ExitCode": 0,
-            "Error": "",
-            "StartedAt": "2020-06-03T12:46:16.863175288Z",
-            "FinishedAt": "0001-01-01T00:00:00Z"
-        },
-        "Image": "sha256:470671670cac686c7cf0081e0b37da2e9f4f768ddc5f6a26102ccd1c6954c1ee",
-        "ResolvConfPath": "/var/lib/docker/containers/bf9dff6cc7423fe3cd324984e4b430fc3de0835d45e3430c94144638269e749d/resolv.conf",
-        "HostnamePath": "/var/lib/docker/containers/bf9dff6cc7423fe3cd324984e4b430fc3de0835d45e3430c94144638269e749d/hostname",
-        "HostsPath": "/var/lib/docker/containers/bf9dff6cc7423fe3cd324984e4b430fc3de0835d45e3430c94144638269e749d/hosts",
-        "LogPath": "/var/lib/docker/containers/bf9dff6cc7423fe3cd324984e4b430fc3de0835d45e3430c94144638269e749d/bf9dff6cc7423fe3cd324984e4b430fc3de0835d45e3430c94144638269e749d-json.log",
-        "Name": "/sad_meitner",
-        "RestartCount": 0,
-        "Driver": "overlay2",
-        "Platform": "linux",
-        "MountLabel": "",
-        "ProcessLabel": "",
-        "AppArmorProfile": "",
-        "ExecIDs": null,
-        "HostConfig": {
-            "Binds": null,
-            "ContainerIDFile": "",
-            "LogConfig": {
-                "Type": "json-file",
-                "Config": {}
-            },
-            "NetworkMode": "default",
-            "PortBindings": {},
-            "RestartPolicy": {
-                "Name": "no",
-                "MaximumRetryCount": 0
-            },
-            "AutoRemove": false,
-            "VolumeDriver": "",
-            "VolumesFrom": null,
-            "CapAdd": null,
-            "CapDrop": null,
-            "Capabilities": null,
-            "Dns": [],
-            "DnsOptions": [],
-            "DnsSearch": [],
-            "ExtraHosts": null,
-            "GroupAdd": null,
-            "IpcMode": "private",
-            "Cgroup": "",
-            "Links": null,
-            "OomScoreAdj": 0,
-            "PidMode": "",
-            "Privileged": false,
-            "PublishAllPorts": false,
-            "ReadonlyRootfs": false,
-            "SecurityOpt": null,
-            "UTSMode": "",
-            "UsernsMode": "",
-            "ShmSize": 67108864,
-            "Runtime": "runc",
-            "ConsoleSize": [
-                0,
-                0
-            ],
-            "Isolation": "",
-            "CpuShares": 0,
-            "Memory": 0,
-            "NanoCpus": 0,
-            "CgroupParent": "",
-            "BlkioWeight": 0,
-            "BlkioWeightDevice": [],
-            "BlkioDeviceReadBps": null,
-            "BlkioDeviceWriteBps": null,
-            "BlkioDeviceReadIOps": null,
-            "BlkioDeviceWriteIOps": null,
-            "CpuPeriod": 0,
-            "CpuQuota": 0,
-            "CpuRealtimePeriod": 0,
-            "CpuRealtimeRuntime": 0,
-            "CpusetCpus": "",
-            "CpusetMems": "",
-            "Devices": [],
-            "DeviceCgroupRules": null,
-            "DeviceRequests": null,
-            "KernelMemory": 0,
-            "KernelMemoryTCP": 0,
-            "MemoryReservation": 0,
-            "MemorySwap": 0,
-            "MemorySwappiness": null,
-            "OomKillDisable": false,
-            "PidsLimit": null,
-            "Ulimits": null,
-            "CpuCount": 0,
-            "CpuPercent": 0,
-            "IOMaximumIOps": 0,
-            "IOMaximumBandwidth": 0,
-            "MaskedPaths": [
-                "/proc/asound",
-                "/proc/acpi",
-                "/proc/kcore",
-                "/proc/keys",
-                "/proc/latency_stats",
-                "/proc/timer_list",
-                "/proc/timer_stats",
-                "/proc/sched_debug",
-                "/proc/scsi",
-                "/sys/firmware"
-            ],
-            "ReadonlyPaths": [
-                "/proc/bus",
-                "/proc/fs",
-                "/proc/irq",
-                "/proc/sys",
-                "/proc/sysrq-trigger"
-            ]
-        },
-        "GraphDriver": {
-            "Data": {
-                "LowerDir": "/var/lib/docker/overlay2/e58aa0f86986d9c3c2728dfb5fc19bdbde426a795f0ee8e57a1ea5648ad8abbe-init/diff:/var/lib/docker/overlay2/e561ea776190156cb514d1c153fd6ca75376aabb5de3557dd9aa389629374af6/diff",
-                "MergedDir": "/var/lib/docker/overlay2/e58aa0f86986d9c3c2728dfb5fc19bdbde426a795f0ee8e57a1ea5648ad8abbe/merged",
-                "UpperDir": "/var/lib/docker/overlay2/e58aa0f86986d9c3c2728dfb5fc19bdbde426a795f0ee8e57a1ea5648ad8abbe/diff",
-                "WorkDir": "/var/lib/docker/overlay2/e58aa0f86986d9c3c2728dfb5fc19bdbde426a795f0ee8e57a1ea5648ad8abbe/work"
-            },
-            "Name": "overlay2"
-        },
-        "Mounts": [],
-        "Config": {
-            "Hostname": "bf9dff6cc742",
+        "Id": "sha256:d1165f2212346b2bab48cb01c1e39ee8ad1be46b87873d9ca7a4e434980a7726",
+        "RepoTags": [
+            "hello-world:latest"
+        ],
+        "RepoDigests": [
+            "hello-world@sha256:308866a43596e83578c7dfa15e27a73011bdd402185a84c5cd7f32a88b501a24"
+        ],
+        "Parent": "",
+        "Comment": "",
+        "Created": "2021-03-05T23:25:25.230064203Z",
+        "Container": "f5a78ef54769bb8490754e9e063a89f90cc8eee6a6c5a0a72655826e99df116e",
+        "ContainerConfig": {
+            "Hostname": "f5a78ef54769",
             "Domainname": "",
             "User": "",
-            "AttachStdin": true,
-            "AttachStdout": true,
-            "AttachStderr": true,
-            "Tty": true,
-            "OpenStdin": true,
-            "StdinOnce": true,
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
             "Env": [
                 "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
             ],
             "Cmd": [
-                "/bin/bash"
+                "/bin/sh",
+                "-c",
+                "#(nop) ",
+                "CMD [\"/hello\"]"
             ],
-            "Image": "centos",
+            "Image": "sha256:77fe0a37fa6ce641a004815f2761a9042618557d253f312cd3da61780e372c8f",
             "Volumes": null,
             "WorkingDir": "",
             "Entrypoint": null,
             "OnBuild": null,
-            "Labels": {
-                "org.label-schema.build-date": "20200114",
-                "org.label-schema.license": "GPLv2",
-                "org.label-schema.name": "CentOS Base Image",
-                "org.label-schema.schema-version": "1.0",
-                "org.label-schema.vendor": "CentOS",
-                "org.opencontainers.image.created": "2020-01-14 00:00:00-08:00",
-                "org.opencontainers.image.licenses": "GPL-2.0-only",
-                "org.opencontainers.image.title": "CentOS Base Image",
-                "org.opencontainers.image.vendor": "CentOS"
-            }
+            "Labels": {}
         },
-        "NetworkSettings": {
-            "Bridge": "",
-            "SandboxID": "23131d1d63e7ec80202de807913bb5d6418e10e8725bc6e15ac14a2763377e41",
-            "HairpinMode": false,
-            "LinkLocalIPv6Address": "",
-            "LinkLocalIPv6PrefixLen": 0,
-            "Ports": {},
-            "SandboxKey": "/var/run/docker/netns/23131d1d63e7",
-            "SecondaryIPAddresses": null,
-            "SecondaryIPv6Addresses": null,
-            "EndpointID": "e79e04e9efa2074ee9140a396f5b6f4082cbab9db13bf09a243335c85ce61a09",
-            "Gateway": "172.17.0.1",
-            "GlobalIPv6Address": "",
-            "GlobalIPv6PrefixLen": 0,
-            "IPAddress": "172.17.0.2",
-            "IPPrefixLen": 16,
-            "IPv6Gateway": "",
-            "MacAddress": "02:42:ac:11:00:02",
-            "Networks": {
-                "bridge": {
-                    "IPAMConfig": null,
-                    "Links": null,
-                    "Aliases": null,
-                    "NetworkID": "5b2b54f4ff34fb6ebd86fe48b467d715a20eb17344ed6a38184d505bfc13a3d9",
-                    "EndpointID": "e79e04e9efa2074ee9140a396f5b6f4082cbab9db13bf09a243335c85ce61a09",
-                    "Gateway": "172.17.0.1",
-                    "IPAddress": "172.17.0.2",
-                    "IPPrefixLen": 16,
-                    "IPv6Gateway": "",
-                    "GlobalIPv6Address": "",
-                    "GlobalIPv6PrefixLen": 0,
-                    "MacAddress": "02:42:ac:11:00:02",
-                    "DriverOpts": null
-                }
-            }
+        "DockerVersion": "19.03.12",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "/hello"
+            ],
+            "Image": "sha256:77fe0a37fa6ce641a004815f2761a9042618557d253f312cd3da61780e372c8f",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": null
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 13336,
+        "VirtualSize": 13336,
+        "GraphDriver": {
+            "Data": {
+                "MergedDir": "/var/lib/docker/overlay2/4affb9589217caf7b23527f0fa4cfe1560a851766476c9e4df3e3a1f3d55ca9c/merged",
+                "UpperDir": "/var/lib/docker/overlay2/4affb9589217caf7b23527f0fa4cfe1560a851766476c9e4df3e3a1f3d55ca9c/diff",
+                "WorkDir": "/var/lib/docker/overlay2/4affb9589217caf7b23527f0fa4cfe1560a851766476c9e4df3e3a1f3d55ca9c/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:f22b99068db93900abe17f7f5e09ec775c2826ecfe9db961fea68293744144bd"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "0001-01-01T00:00:00Z"
         }
     }
 ]
-
 ```
 
 + 进入当前正在运行的容器
 
 ```shell
 # 方法一
-docker exec -it {容器ID} /bin/bash
+docker exec -it <容器ID> /bin/bash
 
 # 测试
 [root@localhost ~]# docker exec -it bf9dff6cc742 /bin/bash
@@ -510,7 +480,7 @@ bin  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  run  s
 
 # 方法二
 
-docker attach {容器ID}
+docker attach <容器ID>
 
 # 测试
 docker attach bf9dff6cc742
@@ -524,9 +494,9 @@ docker attach bf9dff6cc742
 + 拷贝容器内部文件
 
 ```shell
-docker cp {容器ID}:{容器内路径}  目的地主机路径
+docker cp <容器ID>:<容器内路径>  目的地主机路径
 
-# 测试 
+# 测试
 # 查看 /home 路径文件
 [root@localhost ~]# ls /home
 caoshd
@@ -539,7 +509,7 @@ cd /home
 touch test.txt
 
 # 退出容器 (容器停止了)
-exit 
+exit
 
 # 查看容器ID
 docker ps -a                      # -a 查看全部 包括已停止
@@ -553,3 +523,77 @@ docker cp d756bc697d26:/home/test.txt /home
 caoshd  test.txt
 ```
 
+## 网络配置
+
+网络类型
+* Bridge： 桥接模式， 需要配置网络映射（默认使用）
+* Host： 与主机共用网络
+* None： 仅容器内部网络
+
+指定端口映射
+```bash
+dokcer run -d -p <HOST_IP>:<CONTAINER_IP>
+```
+
+随机端口映射
+```bash
+dokcer run -d -P
+```
+
+## 运行Nginx
+
+获取镜像
+```bash
+sudo dokcer pull nginx
+```
+
+新建容器并后台运行
+```bash
+sudo docker run -d -p 8080:80 nginx
+```
+
+查看正在运行容器
+```bash
+docker ps
+```
+
+查看端口信息
+```bash
+netstat -na|grep 8080
+
+# 显示如下
+tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:8080          127.0.0.1:37780         TIME_WAIT
+tcp        0      0 127.0.0.1:8080          127.0.0.1:37776         TIME_WAIT
+```
+访问容器： [Nginx欢迎页](http://localhost:8080/)
+
+## 制作docker镜像
+
+* Dockerfile 用于制作镜像的配置文件
+
+生成文件名为 `Dockerfile` 的文件
+```bash
+# 以官网中央仓库的tomcat作为基础版 生成自己的镜像
+from tomcat
+
+# 配置管理者信息及联系方式
+MAINTAINER caoshd cao-shd@outlook.com
+
+# 复制要发布的 war 包到 tomcat 发布目录
+COPY xbot.war /usr/local/tomcat/webapps
+```
+
+制作镜像命令
+```bash
+docker build -t <image_name>:<image_version> <Dockerfile_path>
+
+# 例如
+docker build -t xbot:latest .
+```
+
+运行自己的容器
+```bash
+docker -run -d -p 80:8080 xbot
+```
+## 镜
